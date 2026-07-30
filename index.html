@@ -302,6 +302,17 @@
   .news .what a:hover { color: var(--beam); }
   .news-empty { font-family: var(--f-ui); font-size: 0.9rem; color: var(--muted); }
 
+  /* ---------- collaborations ---------- */
+  .collabs { list-style: none; margin: 0; padding: 0; display: grid; }
+  .collabs li {
+    display: grid; grid-template-columns: 15rem 1fr; gap: 1.5rem;
+    padding: 1.25rem 0; border-top: 1px solid var(--line);
+  }
+  .collabs li:last-child { border-bottom: 1px solid var(--line); }
+  .collabs .where { font-family: var(--f-display); font-size: 0.8rem; color: var(--cold); letter-spacing: 0.02em; line-height: 1.4; }
+  .collabs .who { font-family: var(--f-ui); font-size: 0.8rem; color: var(--muted); margin: 0.3rem 0 0; }
+  .collabs .what { font-size: 0.96rem; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
   /* ---------- publications ---------- */
   .pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 78ch; }
   .pubs li { padding: 1.15rem 0; border-top: 1px solid var(--line); display: grid; gap: 0.25rem; }
@@ -331,6 +342,7 @@
   @media (max-width: 780px) {
     .demo { grid-template-columns: 1fr; }
     .stop { grid-template-columns: 1fr; gap: 0.15rem; }
+    .collabs li { grid-template-columns: 1fr; gap: 0.5rem; }
     .stop .when { order: -1; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -502,6 +514,14 @@
 
   <section class="wrap">
     <div class="sec-head">
+      <p class="eyebrow">Working with</p>
+      <h2>Current collaborations</h2>
+    </div>
+    <ul class="collabs" id="collabs"></ul>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
       <p class="eyebrow">Publications</p>
       <h2>Selected work</h2>
     </div>
@@ -660,6 +680,31 @@
     photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
 
     // ---------------------------------------------------------------
+    // CURRENT COLLABORATIONS — hand-maintained. Seeded from published
+    // co-authorships; curate freely. `who` is optional.
+    // ---------------------------------------------------------------
+    collaborations: [
+      { where: "FORTH / University of Crete",
+        who: "S. H. Anastasiadis, T. Manouras, E. Koufakis",
+        what: "Regenerable biocidal and self-polishing block copolymer coatings, and mixed polymer brushes probed under hydrostatic pressure." },
+      { where: "TU München",
+        who: "P. Müller-Buschbaum and group",
+        what: "Responsive polymer thin films and the morphology of functional layers for energy applications, followed in situ under humidity and temperature." },
+      { where: "University of Naples Federico II",
+        who: "L. Paduano, G. Vitiello, N. Gallucci, A. Cangiano",
+        what: "Biorecognition at biomimetic bacterial membranes, and the self-assembly of metal-based superlattices." },
+      { where: "ISIS Neutron and Muon Source",
+        who: "L. A. Clifton",
+        what: "Reflectometry of complex model membranes, including LOS/LPS-embedded barriers." },
+      { where: "Stockholm University",
+        who: "L. M. Bergström, E. Brunzell",
+        what: "Solubilisation of phospholipids by peptide surfactants, by combined small-angle X-ray and neutron scattering." },
+      { where: "Institut Laue-Langevin",
+        who: "P. Gutfreund",
+        what: "Method development for grazing-incidence SANS at high pressure, and the sample environment it needs." }
+    ],
+
+    // ---------------------------------------------------------------
     // RECENT NEWS — to add an item, copy one line and put it anywhere in
     // the list. It is sorted newest-first automatically, and only the most
     // recent `newsLimit` items are shown.
@@ -749,6 +794,33 @@
       }
     };
     img.src = PROFILE.photo;
+  })();
+
+  /* ---------- collaborations ---------- */
+  (function renderCollabs() {
+    const host = document.getElementById("collabs");
+    (PROFILE.collaborations || []).forEach(function (c) {
+      const li = document.createElement("li");
+
+      const left = document.createElement("div");
+      const where = document.createElement("div");
+      where.className = "where";
+      where.textContent = c.where;
+      left.appendChild(where);
+      if (c.who) {
+        const who = document.createElement("p");
+        who.className = "who";
+        who.textContent = c.who;
+        left.appendChild(who);
+      }
+
+      const what = document.createElement("p");
+      what.className = "what";
+      what.textContent = c.what;
+
+      li.append(left, what);
+      host.appendChild(li);
+    });
   })();
 
   /* ---------- news ---------- */
