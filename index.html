@@ -285,6 +285,23 @@
   .slot p:last-child { margin-bottom: 0; }
   .slot code { font-family: var(--f-display); font-size: 0.82em; color: var(--beam); }
 
+  /* ---------- news ---------- */
+  .news-grid { display: grid; grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .news { list-style: none; margin: 0; padding: 0; display: grid; }
+  .news li {
+    display: grid; grid-template-columns: 6.5rem 1fr; gap: 1.25rem;
+    padding: 0.95rem 0; border-top: 1px solid var(--line); align-items: baseline;
+  }
+  .news li:last-child { border-bottom: 1px solid var(--line); }
+  .news .when {
+    font-family: var(--f-display); font-size: 0.74rem; letter-spacing: 0.04em;
+    color: var(--beam); font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .news .what { font-size: 0.97rem; line-height: 1.5; color: var(--ink-soft); }
+  .news .what a { color: var(--ink); text-decoration-color: var(--beam); text-underline-offset: 3px; }
+  .news .what a:hover { color: var(--beam); }
+  .news-empty { font-family: var(--f-ui); font-size: 0.9rem; color: var(--muted); }
+
   /* ---------- publications ---------- */
   .pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 78ch; }
   .pubs li { padding: 1.15rem 0; border-top: 1px solid var(--line); display: grid; gap: 0.25rem; }
@@ -387,6 +404,16 @@
   </section>
 
   <section class="wrap">
+    <div class="news-grid">
+      <div class="sec-head" style="margin-bottom:0">
+        <p class="eyebrow">Updates</p>
+        <h2>Recent news</h2>
+      </div>
+      <ul class="news" id="news"></ul>
+    </div>
+  </section>
+
+  <section class="wrap">
     <div class="sec-head">
       <p class="eyebrow">Research</p>
       <h2>What I work on</h2>
@@ -478,6 +505,16 @@
     </div>
     <ul class="pubs">
       <li>
+        <p class="t">Lipo-oligo/polysaccharide biorecognition at the nano-bio interface: insights into LA27 aptamer binding to biomimetic bacterial membranes</p>
+        <p class="a">A. Cangiano, N. Gallucci, C. Di Carluccio, L. A. Clifton, N. Martin, A. Vagias <span class="etal">et al.</span></p>
+        <p class="j"><span>Journal of Colloid and Interface Science</span> <span class="y">2025</span></p>
+      </li>
+      <li>
+        <p class="t">Microphase separation of poly(2-(dimethylamino)ethyl methacrylate)-<i>b</i>-poly(tetrahydropyranyl methacrylate) diblock copolymer thin films</p>
+        <p class="a">T. Manouras, A. Vagias, E. Koufakis, S. H. Anastasiadis <span class="etal">et al.</span></p>
+        <p class="j"><span>Macromolecular Rapid Communications</span> <span class="y">46, 2500138 &middot; 2025</span></p>
+      </li>
+      <li>
         <p class="t">The topology of polymer brushes determines their nanoscale hydration</p>
         <p class="a">A. Vagias, A. Nelson, P. Wang, J. Reitenbach, C. Geiger, L. P. Kreuzer <span class="etal">et al.</span></p>
         <p class="j"><span>Macromolecular Rapid Communications</span> <span class="y">44, 2300035 &middot; 2023</span></p>
@@ -488,14 +525,9 @@
         <p class="j"><span>Macromolecules</span> <span class="y">54, 7298 &middot; 2021</span></p>
       </li>
       <li>
-        <p class="t">Complex tracer diffusion dynamics in polymer solutions</p>
-        <p class="a">A. Vagias, R. Raccis, K. Koynov, U. Jonas, H.-J. Butt, G. Fytas, P. Ko&scaron;ovan <span class="etal">et al.</span></p>
-        <p class="j"><span>Physical Review Letters</span> <span class="y">111, 088301 &middot; 2013</span></p>
-      </li>
-      <li>
-        <p class="t">Diffusion and permeation of labeled IgG in grafted hydrogels</p>
-        <p class="a">A. Vagias, K. Sergelen, K. Koynov, P. Ko&scaron;ovan, J. Dostalek, U. Jonas <span class="etal">et al.</span></p>
-        <p class="j"><span>Macromolecules</span> <span class="y">50, 4770 &middot; 2017</span></p>
+        <p class="t">Salt-dependent phase transition behavior of doubly thermoresponsive poly(sulfobetaine)-based diblock copolymer thin films</p>
+        <p class="a">L. P. Kreuzer, T. Widmann, C. Geiger, P. Wang, A. Vagias, J. E. Heger <span class="etal">et al.</span></p>
+        <p class="j"><span>Langmuir</span> <span class="y">37, 9179 &middot; 2021</span></p>
       </li>
       <li>
         <p class="t">Investigation of the nanoscale morphology in industrially relevant clearcoats of waterborne polymer colloids by means of variable-angle grazing incidence small-angle X-ray scattering</p>
@@ -503,9 +535,9 @@
         <p class="j"><span>ACS Applied Polymer Materials</span> <span class="y">1, 2482 &middot; 2019</span></p>
       </li>
       <li>
-        <p class="t">Dynamics in stimuli-responsive poly(N-isopropylacrylamide) hydrogel layers as revealed by fluorescence correlation spectroscopy</p>
-        <p class="a">A. Vagias, P. Ko&scaron;ovan, K. Koynov, C. Holm, H.-J. Butt, G. Fytas</p>
-        <p class="j"><span>Macromolecules</span> <span class="y">47, 5303 &middot; 2014</span></p>
+        <p class="t">Diffusion and permeation of labeled IgG in grafted hydrogels</p>
+        <p class="a">A. Vagias, K. Sergelen, K. Koynov, P. Ko&scaron;ovan, J. Dostalek, U. Jonas <span class="etal">et al.</span></p>
+        <p class="j"><span>Macromolecules</span> <span class="y">50, 4770 &middot; 2017</span></p>
       </li>
       <li>
         <p class="t">Molecular tracer diffusion in nondilute polymer solutions: universal master curve and glass transition effects</p>
@@ -513,14 +545,14 @@
         <p class="j"><span>Macromolecules</span> <span class="y">48, 8907 &middot; 2015</span></p>
       </li>
       <li>
-        <p class="t">Lipo-oligo/polysaccharide biorecognition at the nano-bio interface: insights into LA27 aptamer binding to biomimetic bacterial membranes</p>
-        <p class="a">A. Cangiano, N. Gallucci, C. Di Carluccio, L. A. Clifton, N. Martin, A. Vagias <span class="etal">et al.</span></p>
-        <p class="j"><span>Journal of Colloid and Interface Science</span> <span class="y">2025</span></p>
+        <p class="t">Dynamics in stimuli-responsive poly(N-isopropylacrylamide) hydrogel layers as revealed by fluorescence correlation spectroscopy</p>
+        <p class="a">A. Vagias, P. Ko&scaron;ovan, K. Koynov, C. Holm, H.-J. Butt, G. Fytas</p>
+        <p class="j"><span>Macromolecules</span> <span class="y">47, 5303 &middot; 2014</span></p>
       </li>
       <li>
-        <p class="t">Salt-dependent phase transition behavior of doubly thermoresponsive poly(sulfobetaine)-based diblock copolymer thin films</p>
-        <p class="a">L. P. Kreuzer, T. Widmann, C. Geiger, P. Wang, A. Vagias, J. E. Heger <span class="etal">et al.</span></p>
-        <p class="j"><span>Langmuir</span> <span class="y">37, 9179 &middot; 2021</span></p>
+        <p class="t">Complex tracer diffusion dynamics in polymer solutions</p>
+        <p class="a">A. Vagias, R. Raccis, K. Koynov, U. Jonas, H.-J. Butt, G. Fytas, P. Ko&scaron;ovan <span class="etal">et al.</span></p>
+        <p class="j"><span>Physical Review Letters</span> <span class="y">111, 088301 &middot; 2013</span></p>
       </li>
     </ul>
     <p class="pubnote">
@@ -595,6 +627,23 @@
     photo: "photo.jpg",
     photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
 
+    // ---------------------------------------------------------------
+    // RECENT NEWS — to add an item, copy one line and put it anywhere in
+    // the list. It is sorted newest-first automatically, and only the most
+    // recent `newsLimit` items are shown.
+    //   date: "2026-03" for month precision, or just "2026" for a year.
+    //   url:  optional. Omit or leave "" for a plain, unlinked entry.
+    // ---------------------------------------------------------------
+    newsLimit: 6,
+    news: [
+      { date: "2025", url: "https://scholar.google.com/citations?user=7UMx0rIAAAAJ&hl=en",
+        text: "New paper in <i>Journal of Colloid and Interface Science</i> on LA27 aptamer binding to biomimetic bacterial membranes." },
+      { date: "2025", url: "",
+        text: "New paper in <i>Macromolecular Rapid Communications</i> on microphase separation in PDMAEMA-<i>b</i>-PTHPMA diblock copolymer thin films." },
+      { date: "2023-11", url: "https://www.ill.eu",
+        text: "Joined the Institut Laue-Langevin as instrument scientist on the D22 small-angle neutron scattering diffractometer." }
+    ],
+
     // Positions, newest first. Any date still containing "20XX" renders
     // underlined in amber, as a reminder that it needs filling in.
     track: [
@@ -658,6 +707,56 @@
       }
     };
     img.src = PROFILE.photo;
+  })();
+
+  /* ---------- news ---------- */
+  (function renderNews() {
+    const host = document.getElementById("news");
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    function label(d) {
+      const m = /^(\d{4})(?:-(\d{2}))?$/.exec(String(d).trim());
+      if (!m) return String(d);
+      return m[2] ? MONTHS[Number(m[2]) - 1] + " " + m[1] : m[1];
+    }
+    // "2025" would sort before "2025-06", so pad a bare year to compare properly.
+    function key(d) { return /^\d{4}$/.test(String(d).trim()) ? d + "-00" : String(d); }
+
+    const items = (PROFILE.news || []).slice()
+      .sort(function (a, b) { return key(b.date).localeCompare(key(a.date)); })
+      .slice(0, PROFILE.newsLimit || 6);
+
+    if (!items.length) {
+      const p = document.createElement("p");
+      p.className = "news-empty";
+      p.textContent = "Nothing to report just yet.";
+      host.replaceWith(p);
+      return;
+    }
+
+    items.forEach(function (n) {
+      const li = document.createElement("li");
+
+      const when = document.createElement("span");
+      when.className = "when";
+      when.textContent = label(n.date);
+
+      const what = document.createElement("span");
+      what.className = "what";
+      if (n.url) {
+        const a = document.createElement("a");
+        a.href = n.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.innerHTML = n.text;
+        what.appendChild(a);
+      } else {
+        what.innerHTML = n.text;
+      }
+
+      li.append(when, what);
+      host.appendChild(li);
+    });
   })();
 
   /* ---------- trajectory ---------- */
