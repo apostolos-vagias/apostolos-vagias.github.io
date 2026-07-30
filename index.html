@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Apostolos Vagias — Soft Matter &amp; Neutron Scattering</title>
+<meta name="description" content="Apostolos Vagias — soft matter and neutron scattering scientist, instrument scientist for D22 small-angle neutron scattering at the Institut Laue-Langevin, Grenoble." />
+<meta name="author" content="Apostolos Vagias" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%9B%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+<meta name="color-scheme" content="light dark" />
+
+<meta property="og:type" content="profile" />
+<meta property="og:title" content="Apostolos Vagias — Soft Matter &amp; Neutron Scattering" />
+<meta property="og:description" content="Apostolos Vagias — soft matter and neutron scattering scientist, instrument scientist for D22 small-angle neutron scattering at the Institut Laue-Langevin, Grenoble." />
+<meta name="twitter:card" content="summary" />
+
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0}
+  img{max-width:100%;height:auto}
+  canvas{max-width:100%}
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --ground:      #F0F3F2;
+    --surface:     #FFFFFF;
+    --surface-alt: #E7ECEB;
+    --ink:         #141A20;
+    --ink-soft:    #48545E;
+    --muted:       #6E7B85;
+    --line:        #D2DAD9;
+    --beam:        #C97A14;
+    --beam-soft:   #F0A94A;
+    --cold:        #2E8A85;
+    --hero-bg:     #0C1116;
+    --hero-ink:    #EDF1F0;
+    --hero-muted:  #8D9BA4;
+    --hero-line:   #232D36;
+
+    --f-display: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --f-body:    Georgia, "Iowan Old Style", "Source Serif Pro", Cambria, serif;
+    --f-ui:      system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    --measure: 66ch;
+    --pad: clamp(1.25rem, 5vw, 4rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:      #0C1116;
+      --surface:     #131A21;
+      --surface-alt: #182129;
+      --ink:         #E6EBEA;
+      --ink-soft:    #A9B6BD;
+      --muted:       #7E8C95;
+      --line:        #253039;
+      --beam:        #F0A94A;
+      --beam-soft:   #C97A14;
+      --cold:        #4FB3AC;
+      --hero-bg:     #080C10;
+      --hero-line:   #1C2630;
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #F0F3F2; --surface: #FFFFFF; --surface-alt: #E7ECEB;
+    --ink: #141A20; --ink-soft: #48545E; --muted: #6E7B85; --line: #D2DAD9;
+    --beam: #C97A14; --beam-soft: #F0A94A; --cold: #2E8A85;
+    --hero-bg: #0C1116; --hero-line: #232D36;
+  }
+  :root[data-theme="dark"] {
+    --ground: #0C1116; --surface: #131A21; --surface-alt: #182129;
+    --ink: #E6EBEA; --ink-soft: #A9B6BD; --muted: #7E8C95; --line: #253039;
+    --beam: #F0A94A; --beam-soft: #C97A14; --cold: #4FB3AC;
+    --hero-bg: #080C10; --hero-line: #1C2630;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: var(--pad); }
+
+  .eyebrow {
+    font-family: var(--f-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  h1, h2, h3 { font-family: var(--f-display); font-weight: 600; text-wrap: balance; margin: 0; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    background: var(--hero-bg);
+    color: var(--hero-ink);
+    overflow: hidden;
+    border-bottom: 1px solid var(--hero-line);
+  }
+  #detector {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    opacity: 0.55;
+    mask-image: radial-gradient(120% 95% at 78% 45%, #000 12%, transparent 68%);
+    -webkit-mask-image: radial-gradient(120% 95% at 78% 45%, #000 12%, transparent 68%);
+  }
+  .hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding-block: clamp(3.5rem, 11vw, 7rem);
+  }
+  .hero-text { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .portrait { margin: 0; }
+  .portrait .frame {
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--hero-line);
+    border-radius: 2px;
+    background: rgba(10, 15, 20, 0.72);
+    backdrop-filter: blur(3px);
+    display: grid; place-content: center; gap: 0.4rem;
+    text-align: center; padding: 1.5rem;
+    overflow: hidden;
+  }
+  .portrait .frame.empty { border-style: dashed; }
+  .portrait .frame p {
+    margin: 0; font-family: var(--f-display); font-size: 0.78rem;
+    letter-spacing: 0.08em; color: var(--hero-ink);
+  }
+  .portrait .frame .hint {
+    font-size: 0.68rem; color: var(--hero-muted); letter-spacing: 0.04em;
+    line-height: 1.5; max-width: 22ch;
+  }
+  .portrait .frame code { color: var(--beam-soft); }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .portrait figcaption {
+    margin-top: 0.6rem; font-family: var(--f-ui); font-size: 0.74rem;
+    color: var(--hero-muted); text-align: right;
+  }
+  .hero .eyebrow { color: var(--beam-soft); }
+  .hero h1 {
+    font-size: clamp(2.1rem, 6.4vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    max-width: 15ch;
+  }
+  .hero h1 .dim { color: var(--hero-muted); }
+  .hero .lede {
+    max-width: 54ch; margin: 0;
+    color: var(--hero-ink); opacity: 0.9;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+  }
+  .hero .place {
+    font-family: var(--f-ui); font-size: 0.9rem;
+    color: var(--hero-muted); margin: 0;
+  }
+
+  .links { display: flex; flex-wrap: wrap; gap: 0.6rem; list-style: none; padding: 0; margin: 0; }
+  .links a, .links span {
+    display: inline-block;
+    font-family: var(--f-display); font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--hero-line);
+    border-radius: 2px;
+    color: var(--hero-ink);
+    text-decoration: none;
+    background: rgba(255,255,255,0.03);
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .links a:hover, .links a:focus-visible { border-color: var(--beam); background: rgba(240,169,74,0.1); }
+  .links span.todo {
+    color: var(--hero-muted);
+    border-style: dashed;
+    cursor: default;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+  section + section { border-top: 1px solid var(--line); }
+  .sec-head { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2.2rem; }
+  .sec-head h2 { font-size: clamp(1.35rem, 3vw, 1.9rem); letter-spacing: -0.02em; }
+  .prose { max-width: var(--measure); color: var(--ink-soft); }
+  .prose p { margin: 0 0 1.05em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- contrast demo ---------- */
+  .demo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .plot-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 1rem 1rem 0.75rem;
+  }
+  #nrplot { display: block; width: 100%; height: auto; }
+  .control { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .control label {
+    font-family: var(--f-display); font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    display: flex; justify-content: space-between; gap: 1rem;
+  }
+  .control output { color: var(--beam); font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; accent-color: var(--beam); margin: 0; }
+  input[type="range"]:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; }
+
+  .readout { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 0.85rem; }
+  .readout li {
+    display: flex; justify-content: space-between; gap: 1rem;
+    border-bottom: 1px dotted var(--line); padding-bottom: 0.5rem;
+    font-family: var(--f-display); font-size: 0.82rem;
+  }
+  .readout dt, .readout .k { color: var(--muted); }
+  .readout .v { color: var(--ink); font-variant-numeric: tabular-nums; text-align: right; }
+
+  /* ---------- interest cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .card { background: var(--surface); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .card h3 { font-size: 0.95rem; letter-spacing: -0.01em; }
+  .card .q { font-family: var(--f-display); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--cold); text-transform: uppercase; }
+  .card p { margin: 0; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.55; }
+
+  /* ---------- methods ---------- */
+  .methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2rem 2.5rem; }
+  .methods h3 { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; }
+  .methods ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+  .methods li { font-family: var(--f-ui); font-size: 0.9rem; color: var(--ink-soft); }
+
+  /* ---------- trajectory ---------- */
+  .track { display: grid; gap: 0; }
+  .stop {
+    display: grid; grid-template-columns: 7rem 9.5rem 1fr; gap: 1.5rem;
+    padding: 1.15rem 0; border-top: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .stop:last-child { border-bottom: 1px solid var(--line); }
+  .stop .where { font-family: var(--f-display); font-size: 0.78rem; color: var(--beam); letter-spacing: 0.04em; }
+  .stop .when {
+    font-family: var(--f-display); font-size: 0.76rem; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+  }
+  .stop .when.todo {
+    color: var(--beam); border-bottom: 1px dashed var(--beam); padding-bottom: 1px;
+  }
+
+  /* ---------- invitation band ---------- */
+  .invite { background: var(--surface-alt); border-top: 1px solid var(--line); }
+  .invite .inner { display: grid; grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .invite h2 { font-size: clamp(1.25rem, 2.6vw, 1.6rem); letter-spacing: -0.02em; }
+  .invite .prose { max-width: 60ch; }
+  .invite .prose p:first-child { font-size: 1.06rem; color: var(--ink); }
+  .stop .what { font-family: var(--f-ui); font-size: 0.94rem; color: var(--ink-soft); }
+  .stop .what b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- placeholder ---------- */
+  .slot {
+    border: 1px dashed var(--line);
+    border-radius: 3px;
+    padding: 1.4rem 1.5rem;
+    background: var(--surface-alt);
+    max-width: var(--measure);
+  }
+  .slot p { margin: 0 0 0.6rem; font-family: var(--f-ui); font-size: 0.9rem; color: var(--ink-soft); }
+  .slot p:last-child { margin-bottom: 0; }
+  .slot code { font-family: var(--f-display); font-size: 0.82em; color: var(--beam); }
+
+  /* ---------- publications ---------- */
+  .pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 78ch; }
+  .pubs li { padding: 1.15rem 0; border-top: 1px solid var(--line); display: grid; gap: 0.25rem; }
+  .pubs li:last-child { border-bottom: 1px solid var(--line); }
+  .pubs .t { margin: 0; font-size: 1rem; line-height: 1.4; color: var(--ink); text-wrap: pretty; }
+  .pubs .a { margin: 0; font-family: var(--f-ui); font-size: 0.85rem; color: var(--muted); }
+  .pubs .a .etal { font-style: italic; }
+  .pubs .j { margin: 0.15rem 0 0; font-family: var(--f-display); font-size: 0.74rem; letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .pubs .j span:first-child { color: var(--cold); }
+  .pubs .j .y { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pubnote { max-width: var(--measure); margin: 1.6rem 0 0; font-family: var(--f-ui); font-size: 0.88rem; color: var(--muted); }
+  .pubnote a { color: var(--beam); text-underline-offset: 3px; }
+  .pubnote #metrics { display: block; margin-top: 0.4rem; font-family: var(--f-display); font-size: 0.75rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+
+  /* ---------- contact ---------- */
+  .contact { display: flex; flex-wrap: wrap; gap: 2.5rem; align-items: baseline; }
+  .contact a { color: var(--beam); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  footer { padding-block: 2.5rem 3.5rem; color: var(--muted); font-family: var(--f-ui); font-size: 0.82rem; border-top: 1px solid var(--line); }
+
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .portrait { max-width: 250px; order: -1; }
+    .invite .inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 780px) {
+    .demo { grid-template-columns: 1fr; }
+    .stop { grid-template-columns: 1fr; gap: 0.15rem; }
+    .stop .when { order: -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<header class="hero">
+  <canvas id="detector" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">Soft matter &middot; Neutron &amp; X-ray scattering</p>
+      <h1>Apostolos Vagias<span class="dim">.</span></h1>
+      <p class="lede">
+        I work on how soft and biological matter organises itself at interfaces &mdash; polymer
+        brushes, responsive films, model membranes &mdash; and on how fast things move inside it.
+        Mostly with neutrons, where isotopic contrast makes buried structure visible without
+        touching the chemistry.
+      </p>
+      <p class="place">Instrument scientist, D22 small-angle neutron scattering &middot; Institut Laue-Langevin, Grenoble</p>
+      <ul class="links" id="links"></ul>
+    </div>
+    <figure class="portrait">
+      <div class="frame empty" id="photoframe">
+        <p>Your photo here</p>
+        <p class="hint">Set <code>PROFILE.photo</code> at the top of the script</p>
+      </div>
+      <figcaption id="photocap" hidden></figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+  <section class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Why neutrons</p>
+      <h2>Contrast variation, live</h2>
+    </div>
+    <div class="demo">
+      <div class="plot-card">
+        <canvas id="nrplot" width="720" height="470" role="img"
+                aria-label="Simulated neutron reflectivity curve of a supported lipid bilayer on silicon, changing with solvent isotopic contrast"></canvas>
+        <div class="control">
+          <label for="frac">
+            <span>Solvent contrast</span>
+            <output id="fracout" for="frac">100&#37; D&#8322;O</output>
+          </label>
+          <input type="range" id="frac" min="0" max="100" value="100" step="1" />
+        </div>
+      </div>
+      <div>
+        <div class="prose">
+          <p>
+            Hydrogen and deuterium scatter neutrons very differently. Swapping H&#8322;O for
+            D&#8322;O leaves the chemistry of a sample untouched but completely rewrites what
+            the experiment sees &mdash; so the same interface can be measured several times
+            over, each time with a different part of it made visible.
+          </p>
+          <p>
+            The curve is a real Parratt calculation for a lipid bilayer on silicon.
+            Drag the slider: the edge of total reflection walks across the plot, and below
+            about 12&#37; D&#8322;O it disappears altogether, because the solvent no longer
+            out-scatters the silicon it sits on.
+          </p>
+        </div>
+        <ul class="readout">
+          <li><span class="k">Solvent SLD</span><span class="v" id="r-sld">&mdash;</span></li>
+          <li><span class="k">Critical edge Q<sub>c</sub></span><span class="v" id="r-qc">&mdash;</span></li>
+          <li><span class="k">Bilayer / SiO<sub>x</sub></span><span class="v">48 &#8491; / 12 &#8491;</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Research</p>
+      <h2>What I work on</h2>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <p class="q">Polymer brushes</p>
+        <h3>Topology sets hydration</h3>
+        <p>Grafted chains hold water differently depending on how they are built, not just how densely they are grafted. Resolving that water &mdash; how much, how bound, how it redistributes with temperature &mdash; is what decides whether a surface fouls or stays clean.</p>
+      </article>
+      <article class="card">
+        <p class="q">Responsive films</p>
+        <h3>Thermoresponsive &amp; zwitterionic copolymers</h3>
+        <p>Poly(sulfobetaine) and PNIPAM-family thin films whose phase behaviour is tuned by salt, humidity and temperature &mdash; followed in situ, so the structural rearrangement is measured rather than inferred.</p>
+      </article>
+      <article class="card">
+        <p class="q">Dynamics</p>
+        <h3>Tracer diffusion in crowded media</h3>
+        <p>How molecules move through polymer solutions, gels and grafted networks, measured by fluorescence correlation spectroscopy. Complex, non-Gaussian dynamics that collapse onto surprisingly universal behaviour.</p>
+      </article>
+      <article class="card">
+        <p class="q">Bio-interfaces</p>
+        <h3>Membranes and recognition</h3>
+        <p>Model and biomimetic bacterial membranes, supported bilayers and anchored vesicles &mdash; and what binds to them. Increasingly under non-ambient conditions: salinity, temperature, hydrostatic pressure.</p>
+      </article>
+      <article class="card">
+        <p class="q">Functional films</p>
+        <h3>Morphology and function in energy materials</h3>
+        <p>Mixed ionic&ndash;electronic conductors, mesoporous oxides and photocatalytic hydrogels, where nanoscale morphology under working conditions &mdash; humidity, water exposure &mdash; governs what the device actually does.</p>
+      </article>
+      <article class="card">
+        <p class="q">Methodology</p>
+        <h3>Getting the number right</h3>
+        <p>Multiple scattering, solvent subtraction, resolution and parameter identifiability, plus the sample environments and reduction pipelines behind them. The unglamorous work separating a real structural result from a well-fitted artefact.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Toolkit</p>
+      <h2>Methods &amp; software</h2>
+    </div>
+    <div class="methods">
+      <div>
+        <h3>Scattering</h3>
+        <ul>
+          <li>Small-angle neutron scattering (SANS)</li>
+          <li>Grazing-incidence SANS (GISANS)</li>
+          <li>Neutron reflectometry</li>
+          <li>GISAXS and X-ray reflectivity</li>
+          <li>Contrast variation and deuteration</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sample environment</h3>
+        <ul>
+          <li>High-pressure cells to the kbar range</li>
+          <li>Langmuir troughs, LB / LS deposition</li>
+          <li>Temperature-controlled multi-cell stages</li>
+          <li>In-situ solvent exchange and flow</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Analysis</h3>
+        <ul>
+          <li>Python, Jupyter, NumPy / SciPy</li>
+          <li>refnx &mdash; reflectometry co-refinement</li>
+          <li>GRASP &mdash; SANS reduction</li>
+          <li>BornAgain, McStas &mdash; forward modelling</li>
+          <li>Bayesian sampling and model selection</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Trajectory</p>
+      <h2>Where I&#8217;ve worked</h2>
+    </div>
+    <div class="track" id="track"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Publications</p>
+      <h2>Selected work</h2>
+    </div>
+    <ul class="pubs">
+      <li>
+        <p class="t">The topology of polymer brushes determines their nanoscale hydration</p>
+        <p class="a">A. Vagias, A. Nelson, P. Wang, J. Reitenbach, C. Geiger, L. P. Kreuzer <span class="etal">et al.</span></p>
+        <p class="j"><span>Macromolecular Rapid Communications</span> <span class="y">44, 2300035 &middot; 2023</span></p>
+      </li>
+      <li>
+        <p class="t">Effects of polymer block length asymmetry and temperature on the nanoscale morphology of thermoresponsive double hydrophilic block copolymers in aqueous solutions</p>
+        <p class="a">A. Vagias, A. Papagiannopoulos, L. P. Kreuzer, D. Giaouzi, S. Busch <span class="etal">et al.</span></p>
+        <p class="j"><span>Macromolecules</span> <span class="y">54, 7298 &middot; 2021</span></p>
+      </li>
+      <li>
+        <p class="t">Complex tracer diffusion dynamics in polymer solutions</p>
+        <p class="a">A. Vagias, R. Raccis, K. Koynov, U. Jonas, H.-J. Butt, G. Fytas, P. Ko&scaron;ovan <span class="etal">et al.</span></p>
+        <p class="j"><span>Physical Review Letters</span> <span class="y">111, 088301 &middot; 2013</span></p>
+      </li>
+      <li>
+        <p class="t">Diffusion and permeation of labeled IgG in grafted hydrogels</p>
+        <p class="a">A. Vagias, K. Sergelen, K. Koynov, P. Ko&scaron;ovan, J. Dostalek, U. Jonas <span class="etal">et al.</span></p>
+        <p class="j"><span>Macromolecules</span> <span class="y">50, 4770 &middot; 2017</span></p>
+      </li>
+      <li>
+        <p class="t">Investigation of the nanoscale morphology in industrially relevant clearcoats of waterborne polymer colloids by means of variable-angle grazing incidence small-angle X-ray scattering</p>
+        <p class="a">A. Vagias, Q. Chen, G. H. ten Brink, D. Hermida-Merino, J. Scheerder <span class="etal">et al.</span></p>
+        <p class="j"><span>ACS Applied Polymer Materials</span> <span class="y">1, 2482 &middot; 2019</span></p>
+      </li>
+      <li>
+        <p class="t">Dynamics in stimuli-responsive poly(N-isopropylacrylamide) hydrogel layers as revealed by fluorescence correlation spectroscopy</p>
+        <p class="a">A. Vagias, P. Ko&scaron;ovan, K. Koynov, C. Holm, H.-J. Butt, G. Fytas</p>
+        <p class="j"><span>Macromolecules</span> <span class="y">47, 5303 &middot; 2014</span></p>
+      </li>
+      <li>
+        <p class="t">Molecular tracer diffusion in nondilute polymer solutions: universal master curve and glass transition effects</p>
+        <p class="a">A. Vagias, J. Schultze, M. Doroshenko, K. Koynov, H.-J. Butt, M. Gauthier <span class="etal">et al.</span></p>
+        <p class="j"><span>Macromolecules</span> <span class="y">48, 8907 &middot; 2015</span></p>
+      </li>
+      <li>
+        <p class="t">Lipo-oligo/polysaccharide biorecognition at the nano-bio interface: insights into LA27 aptamer binding to biomimetic bacterial membranes</p>
+        <p class="a">A. Cangiano, N. Gallucci, C. Di Carluccio, L. A. Clifton, N. Martin, A. Vagias <span class="etal">et al.</span></p>
+        <p class="j"><span>Journal of Colloid and Interface Science</span> <span class="y">2025</span></p>
+      </li>
+      <li>
+        <p class="t">Salt-dependent phase transition behavior of doubly thermoresponsive poly(sulfobetaine)-based diblock copolymer thin films</p>
+        <p class="a">L. P. Kreuzer, T. Widmann, C. Geiger, P. Wang, A. Vagias, J. E. Heger <span class="etal">et al.</span></p>
+        <p class="j"><span>Langmuir</span> <span class="y">37, 9179 &middot; 2021</span></p>
+      </li>
+    </ul>
+    <p class="pubnote">
+      Full list, including work on mixed ionic&ndash;electronic conductors, mesoporous oxides and
+      surfactant self-assembly, on <a id="scholarlink" href="https://scholar.google.com/citations?user=7UMx0rIAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>.
+      <span id="metrics">353 citations &middot; h-index 12 &middot; i10-index 14 &nbsp;—&nbsp; as of July 2026</span>
+    </p>
+  </section>
+
+  <section class="invite">
+    <div class="wrap inner">
+      <div class="sec-head" style="margin-bottom:0">
+        <p class="eyebrow">Working together</p>
+        <h2>For students and collaborators</h2>
+      </div>
+      <div class="prose">
+        <p>
+          I&#8217;m glad to hear from students looking for a Master&#8217;s or PhD project in
+          soft matter scattering, and from groups who want to bring a system to a neutron
+          beamline but aren&#8217;t yet sure it is feasible.
+        </p>
+        <p>
+          If you have a sample and a question, that feasibility conversation is usually short
+          and much more useful early &mdash; well before a proposal deadline, while there is
+          still time to change the contrast scheme, the sample environment, or the amount of
+          material you need to make. Bringing a system that turns out to be too weakly
+          scattering is the most common way good beamtime gets wasted, and it is almost always
+          avoidable on paper first.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Contact</p>
+      <h2>Get in touch</h2>
+    </div>
+    <div class="contact">
+      <div>
+        <p class="eyebrow">Email</p>
+        <p style="margin:0.35rem 0 0"><a href="mailto:vagia001@gmail.com">vagia001@gmail.com</a></p>
+      </div>
+      <div>
+        <p class="eyebrow">Based in</p>
+        <p style="margin:0.35rem 0 0">Grenoble, France</p>
+      </div>
+      <div>
+        <p class="eyebrow">Beamtime</p>
+        <p style="margin:0.35rem 0 0">Proposals and collaborations welcome</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Edit the <code>PROFILE</code> block at the top of the script to set your photo, position dates and links.
+</footer>
+
+<script>
+  "use strict";
+
+  /* ===================================================================
+     EDIT ME — paste your real URLs here. Leave a value as "" and the
+     button renders as a dashed "add link" placeholder instead.
+     =================================================================== */
+  const PROFILE = {
+    // Portrait. On GitHub Pages a relative path works: "photo.jpg".
+    // Inside a published Artifact the CSP blocks external hosts, so use a
+    // data URI ("data:image/jpeg;base64,...") if you want it to show there.
+    photo: "",
+    photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
+
+    // Positions, newest first. Replace the "20XX" placeholders with real dates —
+    // they render underlined in amber until you do.
+    track: [
+      { where: "ILL",        when: "20XX — present",
+        what: "<b>Institut Laue-Langevin</b>, Grenoble — instrument scientist, D22 small-angle neutron scattering" },
+      { where: "TUM / MLZ",  when: "20XX — 20XX",
+        what: "<b>Technical University of Munich</b> and the Heinz Maier-Leibnitz Zentrum, Garching" },
+      { where: "Groningen",  when: "20XX — 20XX",
+        what: "<b>University of Groningen</b>, Netherlands" },
+      { where: "MPI-P",      when: "20XX — 20XX",
+        what: "<b>Max Planck Institute for Polymer Research</b>, Mainz" }
+    ],
+
+    links: [
+      { label: "Google Scholar", url: "https://scholar.google.com/citations?user=7UMx0rIAAAAJ&hl=en" },
+      { label: "LinkedIn",       url: "https://www.linkedin.com/in/apostolos-vagias-76444220/" },
+      { label: "ORCID",          url: "" },
+      { label: "ILL",            url: "https://www.ill.eu" },
+      { label: "Email",          url: "mailto:vagia001@gmail.com" }
+    ]
+  };
+
+  /* ---------- link row ---------- */
+  (function renderLinks() {
+    const ul = document.getElementById("links");
+    PROFILE.links.forEach(function (l) {
+      const li = document.createElement("li");
+      if (l.url) {
+        const a = document.createElement("a");
+        a.href = l.url;
+        a.textContent = l.label;
+        if (!l.url.startsWith("mailto:")) { a.target = "_blank"; a.rel = "noopener"; }
+        li.appendChild(a);
+      } else {
+        const s = document.createElement("span");
+        s.className = "todo";
+        s.textContent = l.label + " — add link";
+        li.appendChild(s);
+      }
+      ul.appendChild(li);
+    });
+  })();
+
+  /* ---------- portrait ---------- */
+  (function renderPhoto() {
+    if (!PROFILE.photo) return;
+    const frame = document.getElementById("photoframe");
+    frame.classList.remove("empty");
+    frame.textContent = "";
+    const img = document.createElement("img");
+    img.src = PROFILE.photo;
+    img.alt = "Apostolos Vagias";
+    frame.appendChild(img);
+    if (PROFILE.photoCredit) {
+      const cap = document.getElementById("photocap");
+      cap.textContent = PROFILE.photoCredit;
+      cap.hidden = false;
+    }
+  })();
+
+  /* ---------- trajectory ---------- */
+  (function renderTrack() {
+    const host = document.getElementById("track");
+    PROFILE.track.forEach(function (s) {
+      const row = document.createElement("div");
+      row.className = "stop";
+
+      const where = document.createElement("span");
+      where.className = "where";
+      where.textContent = s.where;
+
+      const when = document.createElement("span");
+      when.className = "when" + (/20XX/.test(s.when) ? " todo" : "");
+      when.textContent = s.when;
+
+      const what = document.createElement("span");
+      what.className = "what";
+      what.innerHTML = s.what;
+
+      row.append(where, when, what);
+      host.appendChild(row);
+    });
+  })();
+
+  /* ---------- complex arithmetic ---------- */
+  function cmul(a, b) { return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]]; }
+  function cdiv(a, b) {
+    const d = b[0] * b[0] + b[1] * b[1];
+    return [(a[0] * b[0] + a[1] * b[1]) / d, (a[1] * b[0] - a[0] * b[1]) / d];
+  }
+  function cadd(a, b) { return [a[0] + b[0], a[1] + b[1]]; }
+  function csub(a, b) { return [a[0] - b[0], a[1] - b[1]]; }
+  function csqrt(a) {
+    const r = Math.hypot(a[0], a[1]);
+    const re = Math.sqrt(Math.max(0, (r + a[0]) / 2));
+    let im = Math.sqrt(Math.max(0, (r - a[0]) / 2));
+    if (a[1] < 0) im = -im;
+    return [re, im];
+  }
+  function cexp(a) {
+    const e = Math.exp(a[0]);
+    return [e * Math.cos(a[1]), e * Math.sin(a[1])];
+  }
+
+  /* ---------- Parratt recursion, beam incident through the silicon ---------- */
+  const SLD_SI = 2.07e-6, SLD_D2O = 6.36e-6, SLD_H2O = -0.56e-6;
+
+  function stack(solvent) {
+    return [
+      { rho: SLD_SI,  d: 0,  s: 0 },   // silicon fronting
+      { rho: 3.47e-6, d: 12, s: 3 },   // native oxide
+      { rho: 1.80e-6, d: 9,  s: 3 },   // inner headgroups
+      { rho: -0.40e-6, d: 30, s: 3 },  // acyl chains
+      { rho: 1.80e-6, d: 9,  s: 3 },   // outer headgroups
+      { rho: solvent, d: 0,  s: 4 }    // solvent backing
+    ];
+  }
+
+  function reflectivity(q, layers) {
+    const rho0 = layers[0].rho;
+    const kz = layers.map(function (L) {
+      return csqrt([(q / 2) * (q / 2) - 4 * Math.PI * (L.rho - rho0), 0]);
+    });
+    let R = [0, 0];
+    for (let j = layers.length - 2; j >= 0; j--) {
+      const kj = kz[j], kn = kz[j + 1];
+      const sig = layers[j + 1].s;
+      const rough = cexp(cmul(cmul(kj, kn), [-2 * sig * sig, 0]));
+      const rj = cmul(cdiv(csub(kj, kn), cadd(kj, kn)), rough);
+      const d = layers[j + 1].d;
+      const ph = cexp([-2 * kn[1] * d, 2 * kn[0] * d]);
+      const Rp = cmul(R, ph);
+      R = cdiv(cadd(rj, Rp), cadd([1, 0], cmul(rj, Rp)));
+    }
+    return Math.min(1, R[0] * R[0] + R[1] * R[1]);
+  }
+
+  /* ---------- plot ---------- */
+  const cv = document.getElementById("nrplot");
+  const ctx = cv.getContext("2d");
+  const Q0 = 0.005, Q1 = 0.16, LOGLO = -7, LOGHI = 0.35;
+  const M = { l: 62, r: 16, t: 18, b: 44 };
+
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  const xOf = function (q) { return M.l + (q - Q0) / (Q1 - Q0) * (cv.width - M.l - M.r); };
+  const yOf = function (lg) { return M.t + (LOGHI - lg) / (LOGHI - LOGLO) * (cv.height - M.t - M.b); };
+
+  function drawPlot(frac) {
+    const solvent = frac * SLD_D2O + (1 - frac) * SLD_H2O;
+    const layers = stack(solvent);
+    const ink = css("--ink"), muted = css("--muted"), line = css("--line");
+    const beam = css("--beam"), cold = css("--cold"), surf = css("--surface");
+
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = surf;
+    ctx.fillRect(0, 0, cv.width, cv.height);
+
+    // grid
+    ctx.strokeStyle = line; ctx.lineWidth = 1;
+    ctx.font = "11px ui-monospace, Menlo, Consolas, monospace";
+    ctx.fillStyle = muted;
+    for (let lg = 0; lg >= LOGLO; lg -= 1) {
+      const y = Math.round(yOf(lg)) + 0.5;
+      ctx.beginPath(); ctx.moveTo(M.l, y); ctx.lineTo(cv.width - M.r, y); ctx.stroke();
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      ctx.fillText("1e" + lg, M.l - 8, y);
+    }
+    ctx.textAlign = "center"; ctx.textBaseline = "top";
+    for (let q = 0.02; q <= Q1 + 1e-9; q += 0.02) {
+      const x = Math.round(xOf(q)) + 0.5;
+      ctx.beginPath(); ctx.moveTo(x, M.t); ctx.lineTo(x, cv.height - M.b); ctx.stroke();
+      ctx.fillText(q.toFixed(2), x, cv.height - M.b + 8);
+    }
+
+    // axis labels
+    ctx.fillStyle = muted;
+    ctx.textAlign = "center";
+    ctx.fillText("Q  (Å⁻¹)", (M.l + cv.width - M.r) / 2, cv.height - 16);
+    ctx.save();
+    ctx.translate(14, (M.t + cv.height - M.b) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText("Reflectivity", 0, 0);
+    ctx.restore();
+
+    // critical edge marker
+    const dRho = solvent - SLD_SI;
+    let qc = null;
+    if (dRho > 0) {
+      qc = Math.sqrt(16 * Math.PI * dRho);
+      if (qc > Q0 && qc < Q1) {
+        const x = xOf(qc);
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = cold; ctx.lineWidth = 1.25;
+        ctx.beginPath(); ctx.moveTo(x, M.t); ctx.lineTo(x, cv.height - M.b); ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = cold; ctx.textAlign = "left"; ctx.textBaseline = "top";
+        ctx.fillText("Qᴄ", x + 5, M.t + 2);
+      }
+    }
+
+    // curve
+    ctx.beginPath();
+    const N = 620;
+    for (let i = 0; i <= N; i++) {
+      const q = Q0 + (Q1 - Q0) * i / N;
+      const lg = Math.max(LOGLO, Math.log10(Math.max(1e-12, reflectivity(q, layers))));
+      const x = xOf(q), y = yOf(lg);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = beam; ctx.lineWidth = 2; ctx.lineJoin = "round";
+    ctx.stroke();
+
+    // frame
+    ctx.strokeStyle = ink; ctx.globalAlpha = 0.35; ctx.lineWidth = 1;
+    ctx.strokeRect(M.l + 0.5, M.t + 0.5, cv.width - M.l - M.r - 1, cv.height - M.t - M.b - 1);
+    ctx.globalAlpha = 1;
+
+    // readouts
+    document.getElementById("r-sld").textContent = (solvent * 1e6).toFixed(2) + " ×10⁻⁶ Å⁻²";
+    document.getElementById("r-qc").textContent = qc
+      ? qc.toFixed(4) + " Å⁻¹"
+      : "none — no total reflection";
+  }
+
+  const slider = document.getElementById("frac");
+  const out = document.getElementById("fracout");
+  function update() {
+    const pct = Number(slider.value);
+    out.textContent = pct + "% D₂O";
+    drawPlot(pct / 100);
+  }
+  slider.addEventListener("input", update);
+
+  /* ---------- hero: a small-angle detector image ---------- */
+  (function detector() {
+    const c = document.getElementById("detector");
+    const g = c.getContext("2d");
+    const S = 300;
+    c.width = S; c.height = S;
+    const img = g.createImageData(S, S);
+    const cx = S * 0.5, cy = S * 0.5;
+
+    // warm ramp: dark -> teal -> amber -> pale
+    function ramp(t) {
+      t = Math.max(0, Math.min(1, t));
+      const stops = [
+        [0.00, 10, 17, 22],
+        [0.35, 24, 78, 82],
+        [0.65, 201, 122, 20],
+        [0.86, 240, 169, 74],
+        [1.00, 245, 232, 208]
+      ];
+      for (let i = 0; i < stops.length - 1; i++) {
+        const a = stops[i], b = stops[i + 1];
+        if (t >= a[0] && t <= b[0]) {
+          const u = (t - a[0]) / (b[0] - a[0]);
+          return [a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u, a[3] + (b[3] - a[3]) * u];
+        }
+      }
+      return [245, 232, 208];
+    }
+
+    for (let y = 0; y < S; y++) {
+      for (let x = 0; x < S; x++) {
+        const dx = x - cx, dy = y - cy;
+        const r = Math.hypot(dx, dy) / (S * 0.5);
+        // a broad structure-factor ring plus a steep low-q rise
+        const ring = Math.exp(-Math.pow((r - 0.30) / 0.085, 2)) * 0.85;
+        const second = Math.exp(-Math.pow((r - 0.55) / 0.11, 2)) * 0.22;
+        const porod = 0.55 / (1 + Math.pow(r / 0.075, 3.4));
+        let I = ring + second + porod;
+        I *= 0.82 + 0.36 * Math.random();          // counting noise
+        if (r < 0.055) I = 0.02 + 0.02 * Math.random();  // beamstop shadow
+        const col = ramp(Math.pow(I, 0.62));
+        const k = (y * S + x) * 4;
+        img.data[k] = col[0]; img.data[k + 1] = col[1]; img.data[k + 2] = col[2];
+        img.data[k + 3] = 255 * Math.max(0, 1 - Math.pow(r / 1.05, 2.2));
+      }
+    }
+    g.putImageData(img, 0, 0);
+  })();
+
+  /* redraw the plot when the viewer flips theme */
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (mq.addEventListener) mq.addEventListener("change", update);
+  new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  update();
+</script>
+</body>
+</html>
