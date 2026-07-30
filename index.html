@@ -337,7 +337,7 @@
     <figure class="portrait">
       <div class="frame empty" id="photoframe">
         <p>Your photo here</p>
-        <p class="hint">Set <code>PROFILE.photo</code> at the top of the script</p>
+        <p class="hint">Add <code>photo.jpg</code> next to <code>index.html</code></p>
       </div>
       <figcaption id="photocap" hidden></figcaption>
     </figure>
@@ -588,10 +588,11 @@
      button renders as a dashed "add link" placeholder instead.
      =================================================================== */
   const PROFILE = {
-    // Portrait. On GitHub Pages a relative path works: "photo.jpg".
-    // Inside a published Artifact the CSP blocks external hosts, so use a
-    // data URI ("data:image/jpeg;base64,...") if you want it to show there.
-    photo: "",
+    // Portrait. Put an image file next to index.html and name it photo.jpg —
+    // nothing else to change. If the file is missing the placeholder frame is
+    // shown instead, so the page never breaks.
+    // Best results: portrait orientation, roughly 800x1000 px, under ~300 KB.
+    photo: "photo.jpg",
     photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
 
     // Positions, newest first. Replace the "20XX" placeholders with real dates —
@@ -641,17 +642,22 @@
   (function renderPhoto() {
     if (!PROFILE.photo) return;
     const frame = document.getElementById("photoframe");
-    frame.classList.remove("empty");
-    frame.textContent = "";
-    const img = document.createElement("img");
-    img.src = PROFILE.photo;
+    const img = new Image();
     img.alt = "Apostolos Vagias";
-    frame.appendChild(img);
-    if (PROFILE.photoCredit) {
-      const cap = document.getElementById("photocap");
-      cap.textContent = PROFILE.photoCredit;
-      cap.hidden = false;
-    }
+    // Only replace the placeholder once the file has actually loaded, so a
+    // missing or broken image leaves the frame intact rather than showing
+    // a broken-image icon.
+    img.onload = function () {
+      frame.classList.remove("empty");
+      frame.textContent = "";
+      frame.appendChild(img);
+      if (PROFILE.photoCredit) {
+        const cap = document.getElementById("photocap");
+        cap.textContent = PROFILE.photoCredit;
+        cap.hidden = false;
+      }
+    };
+    img.src = PROFILE.photo;
   })();
 
   /* ---------- trajectory ---------- */
