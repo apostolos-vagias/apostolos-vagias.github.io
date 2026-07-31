@@ -1,6 +1,6 @@
 # Publishing this page under your own URL
 
-**Currently live at <https://apostolosvag.github.io>**, deployed from `main` by
+**Currently live at <https://apostolos-vagias.github.io>**, deployed from `main` by
 `.github/workflows/pages.yml` on every push. The options below are kept for
 moving it somewhere else later; nothing in them needs doing today.
 
@@ -52,6 +52,24 @@ HTTPS is automatic and free on all three.
 ILL staff pages carry more authority for an instrument scientist than any
 personal domain, and cost nothing. Worth asking ILL communications whether you
 can host or link this there. Best used *alongside* one of the above, not instead.
+
+## If the address ever changes again
+
+The site URL is derived from the **account username**, not the repo name: a user
+site serves at `<username>.github.io` and its repo must be named
+`<username>.github.io` to match. Changing it therefore means renaming the account
+(Settings → Account → Change username, `github.com/settings/admin`) *and* the
+repository. The old address does not redirect, and the old username becomes
+free for anyone to claim.
+
+Two places in `index.html` hard-code the absolute URL and must be updated by
+hand when it changes — nothing else in the repo refers to it:
+
+- `<link rel="canonical" href="…">`
+- `<meta property="og:url" content="…">`
+
+Also update the `origin` remote (`git remote set-url origin …`) and the URL at
+the top of this file.
 
 ## Keeping it up to date
 
