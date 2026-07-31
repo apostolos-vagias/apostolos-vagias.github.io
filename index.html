@@ -239,7 +239,8 @@
     border-radius: 3px;
     padding: 1rem 1rem 0.75rem;
   }
-  #nrplot { display: block; width: 100%; height: auto; }
+  #nrplot, #sansplot { display: block; width: 100%; height: auto; }
+  .demo + .demo { margin-top: clamp(2rem, 4vw, 3rem); padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--line); }
   .control { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
   .control label {
     font-family: var(--f-display); font-size: 0.72rem;
@@ -477,6 +478,42 @@
           <li><span class="k">Solvent SLD</span><span class="v" id="r-sld">&mdash;</span></li>
           <li><span class="k">Critical edge Q<sub>c</sub></span><span class="v" id="r-qc">&mdash;</span></li>
           <li><span class="k">Bilayer / SiO<sub>x</sub></span><span class="v">48 &#8491; / 12 &#8491;</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="plot-card">
+        <canvas id="sansplot" width="720" height="470" role="img"
+                aria-label="Simulated small-angle neutron scattering curve of a core-shell micelle in solution, changing with the H2O to D2O ratio of the solvent"></canvas>
+        <div class="control">
+          <label for="sfrac">
+            <span>Solvent contrast</span>
+            <output id="sfracout" for="sfrac">100&#37; D&#8322;O</output>
+          </label>
+          <input type="range" id="sfrac" min="0" max="100" value="100" step="1" />
+        </div>
+      </div>
+      <div>
+        <div class="prose">
+          <p>
+            The same trick works in solution, and this is where it earns its keep. The
+            particle here is a micelle with a hydrogenous core and a hydrated shell, and
+            those two parts match the solvent at <em>different</em> H&#8322;O&#8239;/&#8239;D&#8322;O
+            ratios &mdash; so no single contrast makes the whole thing disappear.
+          </p>
+          <p>
+            Drag towards H&#8322;O and the core fades out, leaving the shell; carry on and the
+            shell goes instead. Measuring the same sample at several contrasts is what lets
+            you pull the two apart. Watch the flat background climb as well: H&#8322;O scatters
+            incoherently, which is the price of working near the low-D&#8322;O end.
+          </p>
+        </div>
+        <ul class="readout">
+          <li><span class="k">Solvent SLD</span><span class="v" id="s-sld">&mdash;</span></li>
+          <li><span class="k">Core contrast</span><span class="v" id="s-core">&mdash;</span></li>
+          <li><span class="k">Shell contrast</span><span class="v" id="s-shell">&mdash;</span></li>
+          <li><span class="k">Core / total radius</span><span class="v">45 &#8491; / 63 &#8491;</span></li>
         </ul>
       </div>
     </div>
@@ -1246,6 +1283,139 @@
   }
   slider.addEventListener("input", update);
 
+  /* ---------- SANS from a core-shell micelle in solution ----------
+     Two components that match the solvent at different D₂O fractions, which is
+     the whole point: there is no single contrast that erases the particle. */
+  const CS = {
+    Rc: 45, Rt: 63,          // core and total radius, Å
+    rhoC: -0.39e-6,          // hydrogenous core
+    rhoS: 1.35e-6,           // hydrated shell
+    phi: 0.01,               // volume fraction
+    pd: 0.12                 // size polydispersity, fills in the form-factor minima
+  };
+
+  // 3 j₁(x)/x — the sphere form-factor amplitude. The series avoids the 0/0 at
+  // the origin, where the naive expression loses all its precision.
+  function sphAmp(x) {
+    if (x < 1e-3) return 1 - x * x / 10;
+    return 3 * (Math.sin(x) - x * Math.cos(x)) / (x * x * x);
+  }
+
+  function sansI(q, solvent) {
+    let sumA2 = 0, sumV = 0, sumW = 0;
+    const NP = 17, SPAN = 3;
+    for (let i = 0; i < NP; i++) {
+      const z = -SPAN + 2 * SPAN * i / (NP - 1);
+      const s = 1 + CS.pd * z;
+      if (s <= 0) continue;
+      const w = Math.exp(-0.5 * z * z);
+      const Rc = CS.Rc * s, Rt = CS.Rt * s;
+      const Vc = 4 / 3 * Math.PI * Rc * Rc * Rc;
+      const Vt = 4 / 3 * Math.PI * Rt * Rt * Rt;
+      const A = (CS.rhoC - CS.rhoS) * Vc * sphAmp(q * Rc)
+              + (CS.rhoS - solvent) * Vt * sphAmp(q * Rt);
+      sumA2 += w * A * A;
+      sumV += w * Vt;
+      sumW += w;
+    }
+    // ⟨|A|²⟩ in Å², number density φ/⟨V⟩ in Å⁻³ → Å⁻¹, and 1e8 takes it to cm⁻¹.
+    return 1e8 * (CS.phi / (sumV / sumW)) * (sumA2 / sumW);
+  }
+
+  // Incoherent background: H₂O scatters far more of it than D₂O, so working at
+  // the protonated end costs signal-to-noise. Worth showing rather than hiding.
+  function background(frac) { return 0.02 + 0.88 * (1 - frac); }
+
+  const sv = document.getElementById("sansplot");
+  const sctx = sv.getContext("2d");
+  const SQ0 = 0.003, SQ1 = 0.35, SLO = -2.2, SHI = 2.2;
+  const SM = { l: 62, r: 16, t: 18, b: 44 };
+  const sxOf = function (q) {
+    return SM.l + (Math.log10(q) - Math.log10(SQ0)) / (Math.log10(SQ1) - Math.log10(SQ0)) * (sv.width - SM.l - SM.r);
+  };
+  const syOf = function (lg) { return SM.t + (SHI - lg) / (SHI - SLO) * (sv.height - SM.t - SM.b); };
+
+  function drawSans(frac) {
+    const solvent = frac * SLD_D2O + (1 - frac) * SLD_H2O;
+    const bkg = background(frac);
+    const ink = css("--ink"), muted = css("--muted"), line = css("--line");
+    const beam = css("--beam"), cold = css("--cold"), surf = css("--surface");
+
+    sctx.clearRect(0, 0, sv.width, sv.height);
+    sctx.fillStyle = surf;
+    sctx.fillRect(0, 0, sv.width, sv.height);
+
+    sctx.strokeStyle = line; sctx.lineWidth = 1;
+    sctx.font = "11px ui-monospace, Menlo, Consolas, monospace";
+    sctx.fillStyle = muted;
+    for (let lg = Math.ceil(SLO); lg <= SHI; lg++) {
+      const y = Math.round(syOf(lg)) + 0.5;
+      sctx.beginPath(); sctx.moveTo(SM.l, y); sctx.lineTo(sv.width - SM.r, y); sctx.stroke();
+      sctx.textAlign = "right"; sctx.textBaseline = "middle";
+      sctx.fillText("1e" + lg, SM.l - 8, y);
+    }
+    sctx.textAlign = "center"; sctx.textBaseline = "top";
+    for (let d = -3; d <= 0; d++) {
+      for (const mant of [1, 2, 5]) {
+        const q = mant * Math.pow(10, d);
+        if (q < SQ0 || q > SQ1) continue;
+        const x = Math.round(sxOf(q)) + 0.5;
+        sctx.beginPath(); sctx.moveTo(x, SM.t); sctx.lineTo(x, sv.height - SM.b); sctx.stroke();
+        sctx.fillText(String(q), x, sv.height - SM.b + 8);
+      }
+    }
+
+    sctx.fillStyle = muted; sctx.textAlign = "center";
+    sctx.fillText("Q  (Å⁻¹)", (SM.l + sv.width - SM.r) / 2, sv.height - 16);
+    sctx.save();
+    sctx.translate(14, (SM.t + sv.height - SM.b) / 2);
+    sctx.rotate(-Math.PI / 2);
+    sctx.fillText("I(Q)  (cm⁻¹)", 0, 0);
+    sctx.restore();
+
+    // the incoherent floor, so the curve flattening onto it reads as physics
+    const yb = syOf(Math.log10(bkg));
+    if (yb > SM.t && yb < sv.height - SM.b) {
+      sctx.save();
+      sctx.setLineDash([4, 4]);
+      sctx.strokeStyle = cold; sctx.lineWidth = 1.25;
+      sctx.beginPath(); sctx.moveTo(SM.l, yb); sctx.lineTo(sv.width - SM.r, yb); sctx.stroke();
+      sctx.restore();
+      sctx.fillStyle = cold; sctx.textAlign = "left"; sctx.textBaseline = "bottom";
+      sctx.fillText("incoherent background", SM.l + 6, yb - 3);
+    }
+
+    sctx.beginPath();
+    const N = 500;
+    for (let i = 0; i <= N; i++) {
+      const q = Math.pow(10, Math.log10(SQ0) + (Math.log10(SQ1) - Math.log10(SQ0)) * i / N);
+      const lg = Math.min(SHI, Math.max(SLO, Math.log10(sansI(q, solvent) + bkg)));
+      const x = sxOf(q), y = syOf(lg);
+      if (i === 0) sctx.moveTo(x, y); else sctx.lineTo(x, y);
+    }
+    sctx.strokeStyle = beam; sctx.lineWidth = 2; sctx.lineJoin = "round";
+    sctx.stroke();
+
+    sctx.strokeStyle = ink; sctx.globalAlpha = 0.35; sctx.lineWidth = 1;
+    sctx.strokeRect(SM.l + 0.5, SM.t + 0.5, sv.width - SM.l - SM.r - 1, sv.height - SM.t - SM.b - 1);
+    sctx.globalAlpha = 1;
+
+    const fmt = function (v) { return (v * 1e6).toFixed(2) + " ×10⁻⁶ Å⁻²"; };
+    const near = function (v) { return Math.abs(v) < 0.15e-6 ? " — matched" : ""; };
+    document.getElementById("s-sld").textContent = fmt(solvent);
+    document.getElementById("s-core").textContent = fmt(CS.rhoC - solvent) + near(CS.rhoC - solvent);
+    document.getElementById("s-shell").textContent = fmt(CS.rhoS - solvent) + near(CS.rhoS - solvent);
+  }
+
+  const sslider = document.getElementById("sfrac");
+  const sout = document.getElementById("sfracout");
+  function supdate() {
+    const pct = Number(sslider.value);
+    sout.textContent = pct + "% D₂O";
+    drawSans(pct / 100);
+  }
+  sslider.addEventListener("input", supdate);
+
   /* ---------- hero: a small-angle detector image ---------- */
   (function detector() {
     const c = document.getElementById("detector");
@@ -1295,12 +1465,14 @@
     g.putImageData(img, 0, 0);
   })();
 
-  /* redraw the plot when the viewer flips theme */
+  /* redraw both plots when the viewer flips theme — they read their colours
+     from the CSS custom properties at draw time, so a theme flip needs a repaint */
+  function redraw() { update(); supdate(); }
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
-  if (mq.addEventListener) mq.addEventListener("change", update);
-  new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  if (mq.addEventListener) mq.addEventListener("change", redraw);
+  new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
-  update();
+  redraw();
 </script>
 </body>
 </html>
