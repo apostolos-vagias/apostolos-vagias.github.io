@@ -84,7 +84,8 @@ Two things worth knowing about the metrics:
 
 ### Still open
 
-Nothing. `track` is confirmed end to end: MPI-P 2011 – Sep 2013, FORTH / Jülich
-postdoc Nov 2013 – Sep 2015, Hellenic Army Sep 2015 – Jun 2016, Groningen from
-Mar 2017, TUM / MLZ from Jun 2019, ILL from Nov 2023. The nine months between
-military service and Groningen are a real gap, not a missing entry.
+Nothing. `track` is confirmed end to end, month-precise throughout: MPI-P
+Sep 2010 – Sep 2013, FORTH / Jülich postdoc Nov 2013 – Sep 2015, Hellenic Army
+Sep 2015 – Jun 2016, Groningen Mar 2017 – May 2019, TUM / MLZ Jun 2019 –
+Oct 2023, ILL Nov 2023 – present. The nine months between military service and
+Groningen are a real gap, not a missing entry.
