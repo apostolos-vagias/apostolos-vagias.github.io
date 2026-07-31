@@ -64,7 +64,11 @@ between `AUTO-…-BEGIN` / `AUTO-…-END` markers, and both are rewritten by
 `tools/update_news.py`, which `.github/workflows/news.yml` runs at 06:15 UTC on
 the 1st of each month (or on demand from the Actions tab):
 
-- **`newsAuto`** — recent publications, from the public ORCID API.
+- **`newsAuto`** — recent publications, from the public ORCID API. Openings are
+  varied from a small set of phrasings (`PHRASINGS` in the script) so the list
+  doesn't read as one repeated stencil. The choice is keyed on each paper's DOI,
+  so a given paper keeps its wording for as long as it is on the page; add or
+  reword entries in that list to change the tone.
 - **`metrics`** — citations, h-index and i10-index, from the public OpenAlex API.
 
 Run it locally any time with `python3 tools/update_news.py`. It only writes when
