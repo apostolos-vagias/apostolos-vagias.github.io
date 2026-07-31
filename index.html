@@ -156,6 +156,15 @@
     margin-top: 0.6rem; font-family: var(--f-ui); font-size: 0.74rem;
     color: var(--hero-muted); text-align: right;
   }
+  /* Polytonic Greek lives in the Greek Extended block, which Georgia and the
+     usual UI stacks do not cover — name fonts that carry it before serif,
+     or the breathings and circumflexes drop to tofu. */
+  .portrait .motto {
+    margin: 0.85rem 0 0;
+    font-family: Cambria, "Palatino Linotype", Palatino, "Times New Roman", "DejaVu Serif", serif;
+    font-size: 0.98rem; line-height: 1.5; text-align: right;
+    color: var(--hero-ink); opacity: 0.72;
+  }
   .hero .eyebrow { color: var(--beam-soft); }
   .hero h1 {
     font-size: clamp(2.1rem, 6.4vw, 4rem);
@@ -392,6 +401,7 @@
         <p class="hint">Add <code>photo.jpg</code> next to <code>index.html</code></p>
       </div>
       <figcaption id="photocap" hidden></figcaption>
+      <p class="motto" id="motto" lang="grc" hidden></p>
     </figure>
   </div>
 </header>
@@ -716,6 +726,10 @@
     photo: "photo.jpg",
     photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
 
+    // Sits under the portrait. Leave "" to hide it. Polytonic Greek is fine —
+    // the element is tagged lang="grc" and given a font stack that covers it.
+    motto: "τὰ ἀγαθὰ κόποις κτῶνται",
+
     // ---------------------------------------------------------------
     // VISUAL ABSTRACTS — graphical abstracts from published papers.
     // Only add a figure whose licence actually permits it: CC BY and
@@ -857,6 +871,16 @@
   })();
 
   /* ---------- portrait ---------- */
+  /* ---------- motto ---------- */
+  // Independent of the photo: the line should still show if the image is
+  // missing or slow, since the placeholder frame stays in its place.
+  (function renderMotto() {
+    if (!PROFILE.motto) return;
+    const el = document.getElementById("motto");
+    el.textContent = PROFILE.motto;
+    el.hidden = false;
+  })();
+
   (function renderPhoto() {
     if (!PROFILE.photo) return;
     const frame = document.getElementById("photoframe");
