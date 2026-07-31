@@ -320,6 +320,19 @@
   .collabs .who { font-family: var(--f-ui); font-size: 0.8rem; color: var(--muted); margin: 0.3rem 0 0; }
   .collabs .what { font-size: 0.96rem; line-height: 1.55; color: var(--ink-soft); margin: 0; }
 
+  .sec-head .note { font-family: var(--f-ui); font-size: 0.88rem; color: var(--muted); margin: 0; max-width: 62ch; }
+
+  /* ---------- visual abstracts ---------- */
+  .figures { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem 2.5rem; }
+  .figures figure { margin: 0; }
+  .figures img {
+    width: 100%; height: auto; display: block;
+    border: 1px solid var(--line); border-radius: 3px; background: var(--surface);
+  }
+  .figures figcaption { font-family: var(--f-ui); font-size: 0.82rem; line-height: 1.55; color: var(--muted); margin-top: 0.75rem; }
+  .figures figcaption .lead { display: block; color: var(--ink-soft); margin-bottom: 0.2rem; }
+  .figures figcaption a { color: var(--beam); text-underline-offset: 3px; }
+
   /* ---------- publications ---------- */
   .pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 78ch; }
   .pubs li { padding: 1.15rem 0; border-top: 1px solid var(--line); display: grid; gap: 0.25rem; }
@@ -552,8 +565,17 @@
     <div class="sec-head">
       <p class="eyebrow">Working with</p>
       <h2>Current collaborations</h2>
+      <p class="note">Groups and colleagues I have had the honour to collaborate with.</p>
     </div>
     <ul class="collabs" id="collabs"></ul>
+  </section>
+
+  <section class="wrap" id="figures-section">
+    <div class="sec-head">
+      <p class="eyebrow">In pictures</p>
+      <h2>Visual abstracts</h2>
+    </div>
+    <ul class="figures" id="figures"></ul>
   </section>
 
   <section class="wrap">
@@ -695,6 +717,29 @@
     photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
 
     // ---------------------------------------------------------------
+    // VISUAL ABSTRACTS — graphical abstracts from published papers.
+    // Only add a figure whose licence actually permits it: CC BY and
+    // CC BY-NC-ND are fine on a personal page, closed-access ones need
+    // the publisher's permission first.
+    //
+    // `credit` must match what was done to the image. "Reproduced" means
+    // unaltered, which is what CC BY-NC-ND requires — scaling for the web
+    // is fine, cropping or recolouring is not. Say "Adapted" only where the
+    // licence allows derivatives AND the figure really was changed.
+    //
+    // Put the image file in toc/ and keep it under ~150 KB.
+    // ---------------------------------------------------------------
+    figures: [
+      { src: "toc/polymer-2026-mixed-brushes.jpg",
+        w: 1200, h: 750,
+        alt: "Molecular rendering of a mixed polymer brush: red and white grafted chains tethered to a flat substrate, the red chains extending furthest from the surface.",
+        lead: "Mixed polymer brushes, probed under hydrostatic pressure by HP-GISANS and off-specular reflectivity.",
+        cite: "A. Vagias et al., Polymer 357, 130029 (2026)",
+        url: "https://doi.org/10.1016/j.polymer.2026.130029",
+        credit: "Reproduced under CC BY-NC-ND 4.0" }
+    ],
+
+    // ---------------------------------------------------------------
     // CURRENT COLLABORATIONS — hand-maintained. Seeded from published
     // co-authorships; curate freely. `who` is optional.
     // ---------------------------------------------------------------
@@ -831,6 +876,55 @@
       }
     };
     img.src = PROFILE.photo;
+  })();
+
+  /* ---------- visual abstracts ---------- */
+  (function renderFigures() {
+    const host = document.getElementById("figures");
+    const items = PROFILE.figures || [];
+    // With no figures the heading would sit above nothing, so drop the
+    // whole section rather than leave an empty one behind.
+    if (!items.length) {
+      const sec = document.getElementById("figures-section");
+      if (sec) sec.hidden = true;
+      return;
+    }
+    items.forEach(function (f) {
+      const li = document.createElement("li");
+      const fig = document.createElement("figure");
+
+      const img = document.createElement("img");
+      img.src = f.src;
+      img.alt = f.alt || "";
+      if (f.w) img.width = f.w;
+      if (f.h) img.height = f.h;
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      const cap = document.createElement("figcaption");
+      if (f.lead) {
+        const lead = document.createElement("span");
+        lead.className = "lead";
+        lead.textContent = f.lead;
+        cap.appendChild(lead);
+      }
+      cap.append(document.createTextNode("From "));
+      if (f.url) {
+        const a = document.createElement("a");
+        a.href = f.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = f.cite;
+        cap.appendChild(a);
+      } else {
+        cap.append(document.createTextNode(f.cite));
+      }
+      cap.append(document.createTextNode(f.credit ? ". " + f.credit + "." : "."));
+
+      fig.append(img, cap);
+      li.appendChild(fig);
+      host.appendChild(li);
+    });
   })();
 
   /* ---------- collaborations ---------- */
