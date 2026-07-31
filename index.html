@@ -197,6 +197,9 @@
   /* ---------- sections ---------- */
   section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   section + section { border-top: 1px solid var(--line); }
+  /* The hero already draws the seam below itself, so whichever section leads
+     must not draw a second one on top of it. */
+  main > section:first-child { border-top: none; }
   .sec-head { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2.2rem; }
   .sec-head h2 { font-size: clamp(1.35rem, 3vw, 1.9rem); letter-spacing: -0.02em; }
   .prose { max-width: var(--measure); color: var(--ink-soft); }
@@ -381,6 +384,30 @@
 </header>
 
 <main>
+  <section class="invite">
+    <div class="wrap inner">
+      <div class="sec-head" style="margin-bottom:0">
+        <p class="eyebrow">Working together</p>
+        <h2>For students and collaborators</h2>
+      </div>
+      <div class="prose">
+        <p>
+          I&#8217;m glad to hear from students looking for a Master&#8217;s or PhD project in
+          soft matter scattering, and from groups who want to bring a system to a neutron
+          beamline but aren&#8217;t yet sure it is feasible.
+        </p>
+        <p>
+          If you have a sample and a question, that feasibility conversation is usually short
+          and much more useful early &mdash; well before a proposal deadline, while there is
+          still time to change the contrast scheme, the sample environment, or the amount of
+          material you need to make. Bringing a system that turns out to be too weakly
+          scattering is the most common way good beamtime gets wasted, and it is almost always
+          avoidable on paper first.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="wrap">
     <div class="sec-head">
       <p class="eyebrow">Why neutrons</p>
@@ -619,30 +646,6 @@
       <span id="metrics">304 citations &middot; h-index 11 &middot; i10-index 13 &nbsp;&mdash;&nbsp; <a href="https://openalex.org/A5000055007" target="_blank" rel="noopener">as indexed by OpenAlex</a>, July 2026. Google Scholar counts more sources and reports higher.</span>
       <!-- AUTO-METRICS-END -->
     </p>
-  </section>
-
-  <section class="invite">
-    <div class="wrap inner">
-      <div class="sec-head" style="margin-bottom:0">
-        <p class="eyebrow">Working together</p>
-        <h2>For students and collaborators</h2>
-      </div>
-      <div class="prose">
-        <p>
-          I&#8217;m glad to hear from students looking for a Master&#8217;s or PhD project in
-          soft matter scattering, and from groups who want to bring a system to a neutron
-          beamline but aren&#8217;t yet sure it is feasible.
-        </p>
-        <p>
-          If you have a sample and a question, that feasibility conversation is usually short
-          and much more useful early &mdash; well before a proposal deadline, while there is
-          still time to change the contrast scheme, the sample environment, or the amount of
-          material you need to make. Bringing a system that turns out to be too weakly
-          scattering is the most common way good beamtime gets wasted, and it is almost always
-          avoidable on paper first.
-        </p>
-      </div>
-    </div>
   </section>
 
   <section class="wrap">
