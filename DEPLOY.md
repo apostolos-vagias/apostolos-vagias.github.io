@@ -1,9 +1,13 @@
 # Publishing this page under your own URL
 
+**Currently live at <https://apostolosvag.github.io>**, deployed from `main` by
+`.github/workflows/pages.yml` on every push. The options below are kept for
+moving it somewhere else later; nothing in them needs doing today.
+
 `index.html` is fully self-contained — no external fonts, scripts, images or CSS.
 Drop it on any static host and it works.
 
-## Option A — GitHub Pages (free, gives `apostolosvagias.github.io`)
+## Option A — GitHub Pages (free, gives `<username>.github.io`) — in use
 
 1. Create a GitHub repo named exactly `<your-username>.github.io` (public).
 2. From this folder:
@@ -49,16 +53,36 @@ ILL staff pages carry more authority for an instrument scientist than any
 personal domain, and cost nothing. Worth asking ILL communications whether you
 can host or link this there. Best used *alongside* one of the above, not instead.
 
-## Before you publish
+## Keeping it up to date
 
-Edit the `PROFILE` block near the top of the `<script>` in `index.html`:
+Most of the page is hand-edited in the `PROFILE` block near the top of the
+`<script>` in `index.html` — photo, positions, links, collaborations, and the
+hand-written `news` items (talks, beamtime, students, moves).
 
-- `photo` — for a self-hosted page a relative path works: `"photo.jpg"`
-  (put the file next to `index.html`). The data-URI advice only applies inside
-  a Claude artifact, where external hosts are blocked.
-- `track` — replace the four `20XX` placeholders with real dates. They render
-  underlined in amber until you do.
-- `links` — LinkedIn and Scholar are set; ORCID is still empty.
+Two blocks refresh themselves and should **not** be edited by hand. Both sit
+between `AUTO-…-BEGIN` / `AUTO-…-END` markers, and both are rewritten by
+`tools/update_news.py`, which `.github/workflows/news.yml` runs at 06:15 UTC on
+the 1st of each month (or on demand from the Actions tab):
 
-Then check the metrics line in the Publications section — it is hard-coded
-"as of July 2026" and will go stale.
+- **`newsAuto`** — recent publications, from the public ORCID API.
+- **`metrics`** — citations, h-index and i10-index, from the public OpenAlex API.
+
+Run it locally any time with `python3 tools/update_news.py`. It only writes when
+something actually changed, and it fails safe: if either API is unreachable, or
+if OpenAlex returns implausible zeroes, it leaves that block untouched rather
+than publishing bad numbers.
+
+Two things worth knowing about the metrics:
+
+- They are **OpenAlex** numbers, and are labelled as such on the page. Google
+  Scholar indexes more sources and reports higher; its numbers can't be
+  refreshed automatically, so the page links out to Scholar instead of quoting it.
+- OpenAlex holds a duplicate author record carrying the same ORCID, and the
+  ORCID-based lookup resolves to the near-empty one. The script therefore pins
+  the canonical ID (`A5000055007`, set via `--author`). If the numbers ever look
+  wrong, check that record hasn't been split again upstream.
+
+### Still open
+
+`track` has a gap between MPI-P (ends 2014) and Groningen (starts 2017) — those
+years are simply missing from the trajectory rather than marked as a placeholder.
