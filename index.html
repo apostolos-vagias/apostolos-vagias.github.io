@@ -159,11 +159,16 @@
   /* Polytonic Greek lives in the Greek Extended block, which Georgia and the
      usual UI stacks do not cover — name fonts that carry it before serif,
      or the breathings and circumflexes drop to tofu. */
-  .portrait .motto {
-    margin: 0.85rem 0 0;
+  .portrait .mottos {
+    margin-top: 0.85rem; display: grid; gap: 0.6rem;
     font-family: Cambria, "Palatino Linotype", Palatino, "Times New Roman", "DejaVu Serif", serif;
-    font-size: 0.98rem; line-height: 1.5; text-align: right;
-    color: var(--hero-ink); opacity: 0.72;
+    text-align: right;
+  }
+  .portrait .motto { margin: 0; font-size: 0.98rem; line-height: 1.5; color: var(--hero-ink); opacity: 0.72; }
+  .portrait .motto .src {
+    display: block; margin-top: 0.15rem;
+    font-family: var(--f-ui); font-size: 0.7rem; letter-spacing: 0.02em;
+    color: var(--hero-muted); opacity: 1;
   }
   .hero .eyebrow { color: var(--beam-soft); }
   .hero h1 {
@@ -401,7 +406,7 @@
         <p class="hint">Add <code>photo.jpg</code> next to <code>index.html</code></p>
       </div>
       <figcaption id="photocap" hidden></figcaption>
-      <p class="motto" id="motto" lang="grc" hidden></p>
+      <div class="mottos" id="mottos" hidden></div>
     </figure>
   </div>
 </header>
@@ -726,9 +731,14 @@
     photo: "photo.jpg",
     photoCredit: "",          // optional, e.g. "Photo: ILL / J. Doe"
 
-    // Sits under the portrait. Leave "" to hide it. Polytonic Greek is fine —
-    // the element is tagged lang="grc" and given a font stack that covers it.
-    motto: "τὰ ἀγαθὰ κόποις κτῶνται",
+    // Sit under the portrait, in order. Empty the list to hide the block.
+    // Polytonic Greek is fine: each line is tagged lang="grc" and the block
+    // gets a font stack that covers Greek Extended. `source` is optional and
+    // is tagged lang="el", being modern Greek rather than ancient.
+    mottos: [
+      { text: "τὰ ἀγαθὰ κόποις κτῶνται" },
+      { text: "νήφε καὶ μέμνησο ἀπιστεῖν", source: "Επίχαρμος, 530–440 π.Χ." }
+    ],
 
     // ---------------------------------------------------------------
     // VISUAL ABSTRACTS — graphical abstracts from published papers.
@@ -874,11 +884,29 @@
   /* ---------- motto ---------- */
   // Independent of the photo: the line should still show if the image is
   // missing or slow, since the placeholder frame stays in its place.
-  (function renderMotto() {
-    if (!PROFILE.motto) return;
-    const el = document.getElementById("motto");
-    el.textContent = PROFILE.motto;
-    el.hidden = false;
+  (function renderMottos() {
+    const items = PROFILE.mottos || [];
+    if (!items.length) return;
+    const host = document.getElementById("mottos");
+    items.forEach(function (m) {
+      const p = document.createElement("p");
+      p.className = "motto";
+
+      const line = document.createElement("span");
+      line.lang = "grc";
+      line.textContent = m.text;
+      p.appendChild(line);
+
+      if (m.source) {
+        const src = document.createElement("span");
+        src.className = "src";
+        src.lang = "el";
+        src.textContent = m.source;
+        p.appendChild(src);
+      }
+      host.appendChild(p);
+    });
+    host.hidden = false;
   })();
 
   (function renderPhoto() {
