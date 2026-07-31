@@ -84,5 +84,13 @@ Two things worth knowing about the metrics:
 
 ### Still open
 
-`track` has a gap between MPI-P (ends 2014) and Groningen (starts 2017) — those
-years are simply missing from the trajectory rather than marked as a placeholder.
+The 2013–2016 gap in `track` is now filled (FORTH / Jülich postdoc, then
+military service). Two smaller date questions remain, both needing confirmation
+rather than research:
+
+- **MPI-P overlaps the postdoc.** MPI-P is listed as ending 2014, but the
+  postdoc starts Nov 2013. One of the two is off — most likely MPI-P should end
+  2013, since the postdoc date is month-precise and the MPI-P one is not.
+- **Jun 2016 → 2017 is unaccounted.** Military service ends Jun 2016 and
+  Groningen is listed as starting 2017. If Groningen actually began in 2016,
+  that closes it.
