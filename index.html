@@ -165,6 +165,11 @@
     text-align: right;
   }
   .portrait .motto { margin: 0; font-size: 0.98rem; line-height: 1.5; color: var(--hero-ink); opacity: 0.72; }
+  .portrait .motto .en {
+    display: block; margin-top: 0.2rem;
+    font-family: var(--f-ui); font-size: 0.78rem; font-style: italic; line-height: 1.45;
+    color: var(--hero-muted); opacity: 1;
+  }
   .portrait .motto .src {
     display: block; margin-top: 0.15rem;
     font-family: var(--f-ui); font-size: 0.7rem; letter-spacing: 0.02em;
@@ -736,8 +741,11 @@
     // gets a font stack that covers Greek Extended. `source` is optional and
     // is tagged lang="el", being modern Greek rather than ancient.
     mottos: [
-      { text: "τὰ ἀγαθὰ κόποις κτῶνται" },
-      { text: "νήφε καὶ μέμνησο ἀπιστεῖν", source: "Επίχαρμος, 530–440 π.Χ." }
+      { text: "τὰ ἀγαθὰ κόποις κτῶνται",
+        en: "Good things are won by toil." },
+      { text: "νήφε καὶ μέμνησο ἀπιστεῖν",
+        en: "Be sober, and remember to distrust.",
+        source: "Επίχαρμος, 530–440 π.Χ." }
     ],
 
     // ---------------------------------------------------------------
@@ -896,6 +904,14 @@
       line.lang = "grc";
       line.textContent = m.text;
       p.appendChild(line);
+
+      if (m.en) {
+        const en = document.createElement("span");
+        en.className = "en";
+        en.lang = "en";
+        en.textContent = m.en;
+        p.appendChild(en);
+      }
 
       if (m.source) {
         const src = document.createElement("span");
